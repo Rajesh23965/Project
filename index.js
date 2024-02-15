@@ -1,105 +1,61 @@
-let boxes = document.querySelectorAll(".box");
-let resetBtn = document.querySelector("#reset-btn");
-let newBtn = document.querySelector("#new-btn");
-let msgContainer = document.querySelector(".msg-container");
-let msg = document.querySelector("#msg");
+const BASE_URL = "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies";
 
-let turn0 = true;
+let dropdowns = document.querySelectorAll(".dropdown select");
+let btn = document.querySelector("#btn");
 
-const winPatterns = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+let fromCurr =document.querySelector(".from select");
+let toCurr  = document.querySelector(".to select");
 
-const resetGame = () => {
-  turn0 = true;
-  enableBtn();
-  msgContainer.classList.add("hide");
-  // Reset the text content of the boxes
-  boxes.forEach((box) => {
-    box.innerText = "";
-    box.style.backgroundColor = "";
-    box.style.color = "";
-  });
-};
+let msg = document.querySelector(".msg");
 
-const enableBtn = () => {
-  for (let box of boxes) {
-    box.disabled = false; // Set disabled to false, not box.enable
-  }
-};
-
-const disableBtn = () => {
-  for (let box of boxes) {
-    box.disabled = true;
-  }
-};
-
-
-boxes.forEach((box) => {
-  box.addEventListener("click", () => {
-    if (turn0) {
-      box.innerText = "X";
-      box.style.backgroundColor="violet";
-      box.style.color="blue"
-      turn0 = false;
-    } else {
-      box.innerText = "0";
-      box.style.backgroundColor="yellow";
-      box.style.color="green"
-      turn0 = true;
+for (let select of dropdowns) {
+  for (let currCode in countryList) {
+    let newOption = document.createElement("option");
+    newOption.innerText = currCode;
+    newOption.value = currCode;
+    
+    if (select.name === "from" && currCode === "NPR") {
+      newOption.selected = "selected";
+    } else if (select.name === "to" && currCode === "INR") {
+      newOption.selected = "selected";
     }
-    box.disabled = true;
-    checkWinner();
+    
+    select.append(newOption);
+  }
+
+  select.addEventListener("change", (evt) => {
+    updateFlag(evt.target);
   });
+}
+
+const updateFlag = (element) => {
+  let currCode = element.value;
+  let countryCode = countryList[currCode];
+  let newSrc = `https://flagsapi.com/${countryCode}/flat/64.png`;
+  let img = element.parentElement.querySelector("img");
+  img.src = newSrc;
+};
+
+
+btn.addEventListener("click",async(evt)=>{
+    evt.preventDefault();
+    let amount = document.querySelector(".amount input");
+    let amtVal = amount.value;
+    // console.log(amtVal);
+    if(amtVal ==="" || amtVal <1){
+        amtVal =1;
+        amount.value="1";
+    }
+
+
+    // console.log(fromCurr.value, toCurr.value);
+    const URL =`${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
+    let response = await fetch(URL);
+    let data= await response.json();
+    let rate = data[toCurr.value.toLowerCase()];
+
+    // console.log(rate);
+
+    let finalAmount = amtVal * rate;
+    msg.innerText =`${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
 });
-
-const showWinner = (winner) => {
-  if(winner){
-      msg.innerText = `Congratulations, Winner is ${winner}`;
-      msg.style.backgroundColor = "green";
-    }
-  else{
-    msg.innerText = "Game was draw, Play again!";
-    msg.style.backgroundColor = "red";
-    }
-  msg.style.borderRadius = "1.5rem";
-  msgContainer.classList.remove("hide");
-  disableBtn();
-};
-
-const gameDraw = ()=>{
-  for(let box of boxes){
-    if(box.innerText ===""){
-       return false;  // There are still empty boxes, not a draw
-    }
-  }
-  return true; // All boxes are filled, it's a draw
-};
-
-
-
-let checkWinner = () => {
-  for (let pattern of winPatterns) {
-    let pos1 = boxes[pattern[0]].innerText;
-    let pos2 = boxes[pattern[1]].innerText;
-    let pos3 = boxes[pattern[2]].innerText;
-    if (pos1 !== "" && pos2 !== "" && pos3 !== "") {
-      if (pos1 === pos2 && pos2 === pos3) {
-        showWinner(pos1);
-      }
-    }
-  }
-  if(gameDraw()){
-    showWinner("");
-  }
-};
-
-newBtn.addEventListener("click", resetGame);
-resetBtn.addEventListener("click", resetGame);

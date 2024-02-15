@@ -1,79 +1,88 @@
-* {
-  margin: 0;
-  padding: 0;
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+    min-height: 100vh;
+  /* vh ko meaning tha xaina */
+  background-color: #d8ce65;
+ 
 }
 
-h1{
-  color: red;
-  font-size: 4rem;
+#curr{
+    background-color: rgb(2, 27, 27);
+    border: 2px solid rgb(34, 16, 16);
+    border-radius: 3rem;
+    color: #fff;
 }
 
-body {
-  background-color: #548687;
-  text-align: center;
+.container{
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    min-height: 55vh;
+    width: 50vh;
+    border: 2px solid blue;
+}
+form{
+    margin: 2rem 0 1rem 0;
 }
 
-.container {
-  height: 70vh;
-  display: flex;
-  
-  justify-content: center;
-  align-items: center;
+form select,button,input{
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 0.75rem;
 }
 
-.game {
-  height: 60vmin;
-  width: 60vmin;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5vmin;
+form input{
+    border: 1px solid lightgray;
+    font-size: 1rem;
+    height: 3rem;
+    padding-left: 0.5rem;
 }
 
-.box {
-  height: 18vmin;
-  width: 18vmin;
-  border-radius: 1rem;
-  border: none;
-  /* box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3); */
-  font-size: 8vmin;
-  color: #493eb0;
-  background-color: #ffffc7;
+.dropdown{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
 }
 
-#reset-btn {
-  padding: 1rem;
-  font-size: 1.25rem;
-  background-color: #191913;
-  color: #fff;
-  border-radius: 1rem;
-  border: none;
+.dropdown i{
+    font-size: 1.5rem;
+    margin-top: 1rem;
 }
 
-#new-btn {
-  padding: 1rem;
-  font-size: 1.25rem;
-  background-color: #191913;
-  color: #fff;
-  border-radius: 1rem;
-  border: none;
+.select-container img{
+    max-width: 2rem;
 }
 
-#msg {
-  color: #ffffc7;
-  font-size: 5vmin;
+.select-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 6rem;
+    border:1px solid lightgray;
+    border-radius: 0.5rem;
 }
 
-.msg-container {
-  height: 100vmin;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 4rem;
+.select-container select{
+    font-size: 1rem;
+    width: auto;
 }
 
-.hide {
-  display: none;
+.msg{
+    margin: 2rem 0 2rem 0;
+}
+
+form button{
+    height: 3rem;
+    background-color: rgb(160, 76, 90);
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
